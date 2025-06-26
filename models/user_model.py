@@ -7,5 +7,5 @@ def user_helper(user) -> dict:
         "name": user["name"],
         "email": user["email"],
         "role": user.get("role", "user"),
-        "created_at": user["created_at"]
+        "created_at": user.get("created_at")
     }
