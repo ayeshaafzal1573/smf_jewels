@@ -3,11 +3,11 @@ from bson import ObjectId
 from datetime import datetime
 from models.product_model import product_helper
 # Create product
-async def create_product(data: dict):
-    data["created_at"] = datetime.utcnow()
+async def create_product(data):
     result = await db.products.insert_one(data)
     new_product = await db.products.find_one({"_id": result.inserted_id})
-    return product_helper(new_product)
+    return await product_helper(new_product)  # ✅ FIXED
+
 # Update product by ID
 async def update_product(product_id: str, data: dict):
     updated = await db.products.update_one(

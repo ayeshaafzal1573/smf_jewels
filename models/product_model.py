@@ -1,10 +1,11 @@
-from models.category_model import category_helper
 from bson import ObjectId
 from core.database import db
 
 async def product_helper(product) -> dict:
-    category = await db.categories.find_one({"_id": ObjectId(product["category_id"])})
-    
+    # 🛠 Use the correct key: category_id
+    category = await db.categories.find_one({
+        "_id": ObjectId(product["category_id"])
+    })
     return {
         "id": str(product["_id"]),
         "name": product["name"],
@@ -12,5 +13,10 @@ async def product_helper(product) -> dict:
         "description": product.get("description", ""),
         "stock": product["stock"],
         "images": product.get("images", []),
-        "category": category_helper(category) if category else None
+        "category": {
+            "id": str(category["_id"]),
+            "name": category["name"],
+            "slug": category["slug"]
+        } if category else None
     }
+

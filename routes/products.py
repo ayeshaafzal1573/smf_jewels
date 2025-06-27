@@ -38,11 +38,16 @@ async def delete(product_id: str, user=Depends(is_admin)):
 
 
 # ✅ GET /products — View all products (Public)
-@router.get("/products", response_model=List[ProductResponse])
+@router.get("/all", response_model=List[ProductResponse])
 async def list_products():
     products = await get_all_products()
-    return [product_helper(p) for p in products]
 
+    result = []
+    for p in products:
+        item = await product_helper(p)  # ✅ Awaiting async helper
+        result.append(item)
+
+    return result
 # ✅ GET /products/{product_id} — View single product by ID (Public)
 @router.get("/products/{product_id}", response_model=ProductResponse)
 async def view_product(product_id: str):

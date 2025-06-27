@@ -42,9 +42,9 @@ async def login(form_data: UserLogin):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token({
-        "user_id": str(user["_id"]),
-        "email": user["email"],
-        "role": user.get("role", "user")
-    })
+    "id": str(user["_id"]),   # ✅ Must match your usage in route
+    "email": user["email"],
+    "role": user.get("role", "user")
+})
 
     return {"access_token": token, "token_type": "bearer"}
